@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
 import { AppComponent } from './app.component';
 import { GpaCalculatorComponent } from "./gpa-calculator/gpa-calculator.component";
+import { GpaCalculatorService } from "./gpa-calculator/gpa-calculator.service";
 
 @NgModule({
   declarations: [
@@ -13,7 +14,7 @@ import { GpaCalculatorComponent } from "./gpa-calculator/gpa-calculator.componen
     BrowserModule,
     FormsModule
   ],
-  providers: [],
+  providers: [GpaCalculatorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

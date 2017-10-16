@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Course } from "./Course";
 import { Transcript } from "./mock-data-course";
+import { GpaCalculatorService } from "./gpa-calculator.service";
 
 @Component({
     selector: 'gpa-calculator',
@@ -9,7 +10,10 @@ import { Transcript } from "./mock-data-course";
 })
 export class GpaCalculatorComponent {
     title = 'Gpa Calculator';
-    transcript: Course[] = Transcript;
+    transcript: any;
+    constructor(private gpaCalculatorService: GpaCalculatorService){
+        gpaCalculatorService.getTranscript().then(res => this.transcript = res);
+    }
 
     gpaCalculator(transcript): number {
         let gpa = 0;
@@ -23,6 +27,10 @@ export class GpaCalculatorComponent {
         return sumGradePoints / sumCreditEarned;
     }
 
+    refreshData(){
+        this.gpaCalculatorService.getTranscript().then(res => this.transcript = res);
+    }
+    
     convertGrade(grade): number {
         switch (grade) {
             case ("A"): { return 4.0 }
