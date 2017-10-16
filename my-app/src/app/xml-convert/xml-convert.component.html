@@ -1,0 +1,17 @@
+<div class="contener">
+    <h3 class="text-center" style="color: red">{{title}}</h3>
+    <div class="row">
+        <div class="col-sm-5">
+            <textarea rows="15" cols="50" [(ngModel)]="xml">
+                
+            </textarea>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-primary" (click)="convert(xml)">Convert</button>
+        </div>
+        <div class="col-sm-5">
+            <textarea rows="15" cols="50" readonly>
+            </textarea>
+        </div>
+    </div>
+</div>
