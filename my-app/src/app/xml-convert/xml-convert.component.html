@@ -1,0 +1,36 @@
+<div class="contener">
+    <h3 class="text-center" style="color: red">{{title}}</h3>
+    <div class="row">
+        <div class="col-sm-3">
+            <textarea rows="5" cols="35" [(ngModel)]="xml">     
+            </textarea>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-primary" (click)="convert(xml)">Convert</button>
+            <button type="file" class="btn btn-primary">Open File XML</button>
+            <input id="preview" type="file" (change)="previewFile($event)" />
+        </div>
+        <div class="col-sm-7 table-gpa">
+                <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Course ID</th>
+                                <th>Course Title</th>
+                                <th>Grade</th>
+                                <th>Credits Earned</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let course of courses">
+                            <tr>
+                                <td>{{course.Day}}</td>
+                                <td>{{course.CourseID}}</td>
+                                <td>{{course.CourseTitle}}</td>
+                                <td>{{course.Grade}}</td>
+                                <td>{{course.CreditEarned}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+        </div>
+    </div>
+</div>

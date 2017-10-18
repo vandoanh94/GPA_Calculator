@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Course } from "./Course";
 import { Transcript } from "./mock-data-course";
 import { GpaCalculatorService } from "./gpa-calculator.service";
@@ -10,21 +10,22 @@ import { GpaCalculatorService } from "./gpa-calculator.service";
 })
 export class GpaCalculatorComponent {
     title = 'Gpa Calculator';
-    transcript: any;
+    @Input() transcript: any;
     constructor(private gpaCalculatorService: GpaCalculatorService){
-        gpaCalculatorService.getTranscript().then(res => this.transcript = res);
+        //gpaCalculatorService.getTranscript().then(res => this.transcript = res);
     }
 
     gpaCalculator(transcript): number {
-        let gpa = 0;
-        let sumGradePoints = 0;
-        let sumCreditEarned = 0;
-        transcript.forEach(course => {
-            sumGradePoints += (this.convertGrade(course.Grade) * course.CreditEarned);
-            sumCreditEarned += course.CreditEarned
-
-        });
-        return sumGradePoints / sumCreditEarned;
+        if(transcript!=null){
+            let gpa = 0;
+            let sumGradePoints = 0;
+            let sumCreditEarned = 0;
+            transcript.forEach(course => {
+                sumGradePoints += (this.convertGrade(course.Grade) * course.CreditEarned);
+                sumCreditEarned += course.CreditEarned
+            });
+            return sumGradePoints / sumCreditEarned;
+        } 
     }
 
     refreshData(){
