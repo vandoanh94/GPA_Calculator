@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'GPA Calculator';
+  transcript : any;
+  updateTranscript(event){
+    this.transcript = event;
+  }
 }

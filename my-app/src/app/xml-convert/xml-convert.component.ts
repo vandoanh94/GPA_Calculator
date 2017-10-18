@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import * as xml2js from "xml2js";
 import { Course } from '../gpa-calculator/Course';
 
@@ -13,6 +13,8 @@ export class xmlConvertComponent {
     title = 'XML CONVERT';
     xmlconvert:string = "";
     courses : Course[] =[];
+    @Output()transcript: EventEmitter<any> = new EventEmitter<any>();
+
     convert(any) {
         let obj4 : string = "";
         let data : Course[] =[];
@@ -26,5 +28,6 @@ export class xmlConvertComponent {
         });
         this.xmlconvert = obj4;
         this.courses = data;
+        this.transcript.emit(this.courses);
     }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Course } from "./Course";
 import { Transcript } from "./mock-data-course";
 import { GpaCalculatorService } from "./gpa-calculator.service";
@@ -10,9 +10,9 @@ import { GpaCalculatorService } from "./gpa-calculator.service";
 })
 export class GpaCalculatorComponent {
     title = 'Gpa Calculator';
-    transcript: any;
+    @Input() transcript: any;
     constructor(private gpaCalculatorService: GpaCalculatorService){
-        gpaCalculatorService.getTranscript().then(res => this.transcript = res);
+        //gpaCalculatorService.getTranscript().then(res => this.transcript = res);
     }
 
     gpaCalculator(transcript): number {
