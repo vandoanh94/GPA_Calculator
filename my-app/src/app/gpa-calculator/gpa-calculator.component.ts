@@ -16,15 +16,16 @@ export class GpaCalculatorComponent {
     }
 
     gpaCalculator(transcript): number {
-        let gpa = 0;
-        let sumGradePoints = 0;
-        let sumCreditEarned = 0;
-        transcript.forEach(course => {
-            sumGradePoints += (this.convertGrade(course.Grade) * course.CreditEarned);
-            sumCreditEarned += course.CreditEarned
-
-        });
-        return sumGradePoints / sumCreditEarned;
+        if(transcript!=null){
+            let gpa = 0;
+            let sumGradePoints = 0;
+            let sumCreditEarned = 0;
+            transcript.forEach(course => {
+                sumGradePoints += (this.convertGrade(course.Grade) * course.CreditEarned);
+                sumCreditEarned += course.CreditEarned
+            });
+            return sumGradePoints / sumCreditEarned;
+        } 
     }
 
     refreshData(){
