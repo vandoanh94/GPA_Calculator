@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import * as xml2js from "xml2js";
 import { Course } from '../gpa-calculator/Course';
 
@@ -10,9 +10,12 @@ import { Course } from '../gpa-calculator/Course';
 
 export class xmlConvertComponent {
     xml: any;
-    title = 'XML CONVERT';
     xmlconvert:string = "";
     courses : Course[] =[];
+    @Output()transcript: EventEmitter<any> = new EventEmitter<any>();
+    constructor(){
+
+    }
     convert(any) {
         let obj4 : string = "";
         let data : Course[] =[];
@@ -26,5 +29,13 @@ export class xmlConvertComponent {
         });
         this.xmlconvert = obj4;
         this.courses = data;
+        this.transcript.emit(this.courses);
     }
+    public previewFile(event) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.convert(e.target.result);
+        };
+        reader.readAsText(event.target.files[0]);
+      }
 }
