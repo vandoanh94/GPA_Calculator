@@ -1,5 +1,6 @@
 <h2 class="text-center">{{title}}</h2>
 <div class="container">
-  <!-- <gpa-calculator></gpa-calculator> -->
-  <xml-convert></xml-convert>
+  <xml-convert (transcript) = "updateTranscript($event)"></xml-convert>
+  <gpa-calculator [transcript] = "transcript"></gpa-calculator>
+  
 </div>
