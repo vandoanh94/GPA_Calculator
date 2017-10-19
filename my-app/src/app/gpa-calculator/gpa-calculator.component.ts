@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { Course } from "./Course";
 import { Transcript } from "./mock-data-course";
 import { GpaCalculatorService } from "./gpa-calculator.service";
@@ -11,27 +11,41 @@ import { GpaCalculatorService } from "./gpa-calculator.service";
 export class GpaCalculatorComponent {
     title = 'Gpa Calculator';
     @Input() transcript: any;
-    constructor(private gpaCalculatorService: GpaCalculatorService){
-        //gpaCalculatorService.getTranscript().then(res => this.transcript = res);
+    ob: any;
+    constructor(private gpaCalculatorService: GpaCalculatorService) {
     }
-
+    ngOnChanges(changes: SimpleChanges) {
+        changes.transcript.currentValue;
+        this.ob = this.deepCopy(this.transcript);
+    }
+    refreshData() {
+        this.transcript = this.deepCopy(this.ob);
+    }
+    deepCopy(oldObj: any) {
+        var newObj = oldObj;
+        if (oldObj && typeof oldObj === "object") {
+            newObj = Object.prototype.toString.call(oldObj) === "[object Array]" ? [] : {};
+            for (var i in oldObj) {
+            newObj[i] = this.deepCopy(oldObj[i]);
+            }
+        }
+        return newObj;
+    }
     gpaCalculator(transcript): number {
-        if(transcript!=null){
+        if (transcript != null) {
             let gpa = 0;
             let sumGradePoints = 0;
-            let sumCreditEarned = 0;
+            let sumCreditEarned: number = 0;
             transcript.forEach(course => {
-                sumGradePoints += (this.convertGrade(course.Grade) * course.CreditEarned);
-                sumCreditEarned += course.CreditEarned
+                sumGradePoints += Number(this.convertGrade(course.Grade) * course.CreditEarned);
+                sumCreditEarned += Number(course.CreditEarned);
             });
+            console.log(sumGradePoints);
+            console.log(sumCreditEarned);
             return sumGradePoints / sumCreditEarned;
-        } 
+        }
     }
 
-    refreshData(){
-        this.gpaCalculatorService.getTranscript().then(res => this.transcript = res);
-    }
-    
     convertGrade(grade): number {
         switch (grade) {
             case ("A"): { return 4.0 }
@@ -59,6 +73,7 @@ export class GpaCalculatorComponent {
             case ("d-"): { return 0.7 }
             case ("f"): { return 0 }
         }
+        return 0;
     }
 }
 

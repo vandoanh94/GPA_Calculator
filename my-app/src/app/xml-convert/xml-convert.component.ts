@@ -10,7 +10,6 @@ import { Course } from '../gpa-calculator/Course';
 
 export class xmlConvertComponent {
     xml: any;
-    title = 'XML CONVERT';
     xmlconvert:string = "";
     courses : Course[] =[];
     @Output()transcript: EventEmitter<any> = new EventEmitter<any>();
