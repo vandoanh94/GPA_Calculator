@@ -1,6 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { Course } from "./Course";
-import { Transcript } from "./mock-data-course";
 import { GpaCalculatorService } from "./gpa-calculator.service";
 
 @Component({
@@ -11,15 +10,15 @@ import { GpaCalculatorService } from "./gpa-calculator.service";
 export class GpaCalculatorComponent {
     title = 'Gpa Calculator';
     @Input() transcript: any;
-    ob: any;
+    transcript_default: any;
     constructor(private gpaCalculatorService: GpaCalculatorService) {
     }
     ngOnChanges(changes: SimpleChanges) {
         changes.transcript.currentValue;
-        this.ob = this.deepCopy(this.transcript);
+        this.transcript_default = this.deepCopy(this.transcript);
     }
     refreshData() {
-        this.transcript = this.deepCopy(this.ob);
+        this.transcript = this.deepCopy(this.transcript_default);
     }
     deepCopy(oldObj: any) {
         var newObj = oldObj;
@@ -40,8 +39,6 @@ export class GpaCalculatorComponent {
                 sumGradePoints += Number(this.convertGrade(course.Grade) * course.CreditEarned);
                 sumCreditEarned += Number(course.CreditEarned);
             });
-            console.log(sumGradePoints);
-            console.log(sumCreditEarned);
             return sumGradePoints / sumCreditEarned;
         }
     }
