@@ -1,26 +1,75 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { Course } from "./Course";
-import { Transcript } from "./mock-data-course";
+import { GpaCalculatorService } from "./gpa-calculator.service";
 
 @Component({
     selector: 'gpa-calculator',
     templateUrl: './gpa-calculator.component.html',
     styleUrls: ['./gpa-calculator.component.css']
 })
+
 export class GpaCalculatorComponent {
     title = 'Gpa Calculator';
-    transcript: Course[] = Transcript;
-
+    @Input() transcript: any;
+    transcript_default: any;
+    hopeGPA: any = null;
+    constructor(private gpaCalculatorService: GpaCalculatorService) {
+    }
+    setColor(grade): string {
+        if (grade < this.hopeGPA - 0.7) {
+            return "red";
+        }
+        if (grade < this.hopeGPA) {
+            return "yellow";
+        }
+        if (grade >= this.hopeGPA) {
+            return "green";
+        }
+    }
+    ngOnChanges(changes: SimpleChanges) {
+        changes.transcript.currentValue;
+        this.transcript_default = this.deepCopy(this.transcript);
+    }
+    modifiedCourses(transcript): any {
+        // let modifiedTranscript : any;
+        // for (let i = 0; i < this.transcript_default.length(); i++){
+        //     if(this.transcript_default[i].Grade != this.transcript[i].Grade){
+        //         modifiedTranscript.push(this.transcript[i]);
+        //     }
+        // }
+        // return modifiedTranscript;
+        let modifiedTranscript : any[] = [];
+        for (var i in this.transcript_default) {
+            if(this.convertGrade(this.transcript_default[i].Grade) != this.convertGrade(transcript[i].Grade)){
+                 modifiedTranscript.push(transcript[i]);
+            }
+        }
+        return modifiedTranscript;
+    }
+    refreshData() {
+        this.transcript = this.deepCopy(this.transcript_default);
+    }
+    deepCopy(oldObj: any) {
+        var newObj = oldObj;
+        if (oldObj && typeof oldObj === "object") {
+            newObj = Object.prototype.toString.call(oldObj) === "[object Array]" ? [] : {};
+            for (var i in oldObj) {
+                newObj[i] = this.deepCopy(oldObj[i]);
+            }
+        }
+        return newObj;
+    }
     gpaCalculator(transcript): number {
-        let gpa = 0;
-        let sumGradePoints = 0;
-        let sumCreditEarned = 0;
-        transcript.forEach(course => {
-            sumGradePoints += (this.convertGrade(course.Grade) * course.CreditEarned);
-            sumCreditEarned += course.CreditEarned
-
-        });
-        return sumGradePoints / sumCreditEarned;
+        if (transcript != null) {
+            let gpa = 0;
+            let sumGradePoints = 0;
+            let sumCreditEarned: number = 0;
+            transcript.forEach(course => {
+                sumGradePoints += Number(this.convertGrade(course.Grade) * course.CreditEarned);
+                sumCreditEarned += Number(course.CreditEarned);
+            });
+            return sumGradePoints / sumCreditEarned;
+        }
     }
 
     convertGrade(grade): number {
@@ -50,6 +99,7 @@ export class GpaCalculatorComponent {
             case ("d-"): { return 0.7 }
             case ("f"): { return 0 }
         }
+        return 0;
     }
 }
 
