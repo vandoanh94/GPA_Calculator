@@ -7,15 +7,44 @@ import { GpaCalculatorService } from "./gpa-calculator.service";
     templateUrl: './gpa-calculator.component.html',
     styleUrls: ['./gpa-calculator.component.css']
 })
+
 export class GpaCalculatorComponent {
     title = 'Gpa Calculator';
     @Input() transcript: any;
     transcript_default: any;
+    hopeGPA: any = null;
     constructor(private gpaCalculatorService: GpaCalculatorService) {
+    }
+    setColor(grade): string {
+        if (grade < this.hopeGPA - 0.7) {
+            return "red";
+        }
+        if (grade < this.hopeGPA) {
+            return "yellow";
+        }
+        if (grade >= this.hopeGPA) {
+            return "green";
+        }
     }
     ngOnChanges(changes: SimpleChanges) {
         changes.transcript.currentValue;
         this.transcript_default = this.deepCopy(this.transcript);
+    }
+    modifiedCourses(transcript): any {
+        // let modifiedTranscript : any;
+        // for (let i = 0; i < this.transcript_default.length(); i++){
+        //     if(this.transcript_default[i].Grade != this.transcript[i].Grade){
+        //         modifiedTranscript.push(this.transcript[i]);
+        //     }
+        // }
+        // return modifiedTranscript;
+        let modifiedTranscript : any[] = [];
+        for (var i in this.transcript_default) {
+            if(this.convertGrade(this.transcript_default[i].Grade) != this.convertGrade(transcript[i].Grade)){
+                 modifiedTranscript.push(transcript[i]);
+            }
+        }
+        return modifiedTranscript;
     }
     refreshData() {
         this.transcript = this.deepCopy(this.transcript_default);
@@ -25,7 +54,7 @@ export class GpaCalculatorComponent {
         if (oldObj && typeof oldObj === "object") {
             newObj = Object.prototype.toString.call(oldObj) === "[object Array]" ? [] : {};
             for (var i in oldObj) {
-            newObj[i] = this.deepCopy(oldObj[i]);
+                newObj[i] = this.deepCopy(oldObj[i]);
             }
         }
         return newObj;

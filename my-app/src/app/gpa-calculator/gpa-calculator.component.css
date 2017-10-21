@@ -2,3 +2,15 @@
     width: 300px;
     position: fixed;
 }
+.td-{
+    background: rgb(255, 255, 255);
+}
+.td-red{
+    background: red;
+}
+.td-green{
+    background: rgb(42, 226, 42);
+}
+.td-yellow{
+    background: rgb(243, 247, 16);
+}
