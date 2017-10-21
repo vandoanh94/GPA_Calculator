@@ -12,37 +12,57 @@
                 </tr>
             </thead>
             <tbody *ngFor="let course of transcript">
-                <tr>
+                <tr *ngIf="course.CreditEarned>0">
                     <td>{{course.Day}}</td>
                     <td>{{course.CourseID}}</td>
                     <td>{{course.CourseTitle}}</td>
-                    <td>
-                        <input [(ngModel)]="course.Grade">
+                    <td class="td-{{setColor(convertGrade(course.Grade))}}">
+                        <input pattern="[]" type="text" style="text-transform:uppercase" [(ngModel)]="course.Grade">
                     </td>
                     <td>{{course.CreditEarned}}</td>
-                    <td>{{convertGrade(course.Grade)*course.CreditEarned}}</td>
+                    <td>{{convertGrade(course.Grade)*course.CreditEarned | number:'1.2-2'}}</td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="col-sm-3">
-        <table class="table table-bordered table-gpa">
-            <thead>
-                <tr>
-                    <th>Calculator</th>
-                    <th><button type="button" class="btn" (click)="refreshData()">Refresh Data</button></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Current GPA: </td>
-                    <td>{{gpaCalculator(transcript_default)}}</td>
-                </tr>
-                <tr>
-                    <td>Hope GPA: </td>
-                    <td>{{gpaCalculator(transcript)}}</td>
-                </tr>
-            </tbody>
+        <table clas="table-gpa">
+            <tr>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Calculator</th>
+                            <th>
+                                <button type="button" class="btn" (click)="refreshData()">Refresh Data</button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Current GPA: </td>
+                            <td>{{gpaCalculator(transcript_default) | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Change GPA: </td>
+                            <td>{{gpaCalculator(transcript) | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Hope GPA: </td>
+                            <td>
+                                <input [(ngModel)]="hopeGPA">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </tr>
+            <tr>
+                <table class="table table-bordered">
+                    <tr *ngFor="let course of modifiedCourses(transcript)">
+                        <td>{{course.CourseTitle}}</td>
+                        <td>{{course.Grade|uppercase}}</td>
+                    </tr>
+                </table>
+            </tr>
         </table>
     </div>
 </div>
