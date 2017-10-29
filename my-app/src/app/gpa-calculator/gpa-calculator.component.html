@@ -6,12 +6,19 @@
                     <th>Day</th>
                     <th>Course ID</th>
                     <th>Course Title</th>
-                    <th>Grade</th>
+                    <th>Grade
+                        <select *ngIf="hopeGPA!=null" [(ngModel)]="colorSelected">
+                            <option value="Full">Full</option>
+                            <option class="td-green" value="green">Green</option>
+                            <option class="td-yellow" value="yellow">Yellow</option>
+                            <option class="td-red" value="red">Red</option>
+                          </select>
+                    </th>
                     <th>Credits Earned</th>
                 </tr>
             </thead>
             <tbody *ngFor="let course of transcript">
-                <tr *ngIf="course.CreditEarned>0">
+                <tr *ngIf="course.CreditEarned>0 && showCheck(setColor(convertGrade(course.Grade)))">
                     <td>{{course.Day}}</td>
                     <td>{{course.CourseID}}</td>
                     <td>{{course.CourseTitle}}</td>

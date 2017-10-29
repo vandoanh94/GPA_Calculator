@@ -13,7 +13,16 @@ export class GpaCalculatorComponent {
     @Input() transcript: any;
     transcript_default: any;
     hopeGPA: any = null;
+    colorSelected = "Full";
     constructor(private gpaCalculatorService: GpaCalculatorService) {
+    }
+    showCheck(color:string):boolean{
+        if(this.hopeGPA == null)
+            return true;
+        if(this.colorSelected == "Full")
+                return true;
+        else if(color == this.colorSelected)
+            return true;
     }
     setColor(grade): string {
         if(this.hopeGPA==null)
