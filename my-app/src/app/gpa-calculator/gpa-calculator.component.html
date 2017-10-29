@@ -8,7 +8,6 @@
                     <th>Course Title</th>
                     <th>Grade</th>
                     <th>Credits Earned</th>
-                    <th>Grade Points</th>
                 </tr>
             </thead>
             <tbody *ngFor="let course of transcript">
@@ -20,14 +19,12 @@
                         <input pattern="[]" type="text" style="text-transform:uppercase" [(ngModel)]="course.Grade">
                     </td>
                     <td>{{course.CreditEarned}}</td>
-                    <td>{{convertGrade(course.Grade)*course.CreditEarned | number:'1.2-2'}}</td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="col-sm-3">
-        <table clas="table-gpa">
-            <tr>
+        <div clas="table-gpa">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -54,15 +51,12 @@
                         </tr>
                     </tbody>
                 </table>
-            </tr>
-            <tr>
                 <table class="table table-bordered">
                     <tr *ngFor="let course of modifiedCourses(transcript)">
                         <td>{{course.CourseTitle}}</td>
                         <td>{{course.Grade|uppercase}}</td>
                     </tr>
                 </table>
-            </tr>
-        </table>
+        </div>
     </div>
 </div>

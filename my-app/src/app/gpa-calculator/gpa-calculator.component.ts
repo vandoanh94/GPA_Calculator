@@ -16,6 +16,8 @@ export class GpaCalculatorComponent {
     constructor(private gpaCalculatorService: GpaCalculatorService) {
     }
     setColor(grade): string {
+        if(this.hopeGPA==null)
+            return "white";
         if (grade < this.hopeGPA - 0.7) {
             return "red";
         }
