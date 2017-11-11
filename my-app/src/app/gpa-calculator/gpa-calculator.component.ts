@@ -37,18 +37,14 @@ export class GpaCalculatorComponent {
             return "green";
         }
     }
+    onSelectGrade(courseGrade){
+
+    }
     ngOnChanges(changes: SimpleChanges) {
         changes.transcript.currentValue;
         this.transcript_default = this.deepCopy(this.transcript);
     }
     modifiedCourses(transcript): any {
-        // let modifiedTranscript : any;
-        // for (let i = 0; i < this.transcript_default.length(); i++){
-        //     if(this.transcript_default[i].Grade != this.transcript[i].Grade){
-        //         modifiedTranscript.push(this.transcript[i]);
-        //     }
-        // }
-        // return modifiedTranscript;
         let modifiedTranscript : any[] = [];
         for (var i in this.transcript_default) {
             if(this.convertGrade(this.transcript_default[i].Grade) != this.convertGrade(transcript[i].Grade)){
@@ -82,7 +78,39 @@ export class GpaCalculatorComponent {
             return sumGradePoints / sumCreditEarned;
         }
     }
+    grades = ["A","A-","B+","B","B-","C+","C","C-","D+","D","D-","F"];
+    onSellectGrades(CourseID){
+        let grade;
+        this.transcript_default.forEach(element => {
+            if(element.CourseID==CourseID){
+                grade=element.Grade;
+            }
+        });
+        let newGrades=[];
+        let keepGoing = true;
+        this.grades.forEach(element => {
+            if(keepGoing){
+                newGrades.push(element);
+                if(grade == element){
+                    keepGoing = false;
+                }
+            }  
+        });
+        return newGrades;
+    }
 
+    deleteChange(CourseID){
+        this.transcript_default.forEach(element => {
+            if(element.CourseID==CourseID){
+                let Course = element;
+                this.transcript.forEach(element => {
+                    if(element.CourseID==CourseID){
+                        element.Grade = Course.Grade;
+                    }
+                });
+            }
+        });
+    }
     convertGrade(grade): number {
         switch (grade) {
             case ("A"): { return 4.0 }
