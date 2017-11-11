@@ -37,9 +37,7 @@ export class GpaCalculatorComponent {
             return "green";
         }
     }
-    onSelectGrade(courseGrade){
 
-    }
     ngOnChanges(changes: SimpleChanges) {
         changes.transcript.currentValue;
         this.transcript_default = this.deepCopy(this.transcript);
@@ -98,7 +96,10 @@ export class GpaCalculatorComponent {
         });
         return newGrades;
     }
-
+    text="";
+    openExport(){
+        this.text = "text done!";
+    }
     deleteChange(CourseID){
         this.transcript_default.forEach(element => {
             if(element.CourseID==CourseID){

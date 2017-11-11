@@ -65,14 +65,39 @@
                 </table>
                 <table class="table table-bordered">
                     <tr>
-                        <th colspan="3">Change Courses</th>
+                        <th colspan="3">
+                            Change Courses
+                            <button type="button" class="btn btn-sm pull-right" data-toggle="modal" data-target="#myModal" (click)="openExport()">Export</button>
+
+                        </th>
                     </tr>
                     <tr *ngFor="let course of modifiedCourses(transcript)">
                         <td>{{course.CourseTitle}}</td>
                         <td>{{course.Grade}}</td>
-                        <td><button style="font-size:12px" (click)="deleteChange(course.CourseID)">Delete</button></td>
+                        <td><button type="button" class="btn btn-xs btn-danger" (click)="deleteChange(course.CourseID)">Delete</button></td>
                     </tr>
                 </table>
         </div>
     </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-center">EXPORT</h4>
+      </div>
+      <div class="modal-body">
+        <li *ngFor="let course of modifiedCourses(transcript)">
+                {{course.CourseTitle}}
+        </li>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" >Export To PDF</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>
