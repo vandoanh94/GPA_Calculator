@@ -22,8 +22,13 @@
                     <td>{{course.Day}}</td>
                     <td>{{course.CourseID}}</td>
                     <td>{{course.CourseTitle}}</td>
-                    <td class="td-{{setColor(convertGrade(course.Grade))}}">
-                        <input pattern="[]" type="text" style="text-transform:uppercase" [(ngModel)]="course.Grade">
+                    <td class="td-{{setColor(convertGrade(course.Grade))}}" *ngIf="onSellectGrades(course.CourseID).length>1">
+                        <select [(ngModel)]="course.Grade" >
+                            <option *ngFor="let grade of onSellectGrades(course.CourseID)" [value]="grade">{{grade}}</option>
+                          </select>
+                    </td>
+                    <td class="td-{{setColor(convertGrade(course.Grade))}}" *ngIf="onSellectGrades(course.CourseID).length==1">
+                        {{course.Grade}}
                     </td>
                     <td>{{course.CreditEarned}}</td>
                 </tr>
@@ -59,9 +64,13 @@
                     </tbody>
                 </table>
                 <table class="table table-bordered">
+                    <tr>
+                        <th colspan="3">Change Courses</th>
+                    </tr>
                     <tr *ngFor="let course of modifiedCourses(transcript)">
                         <td>{{course.CourseTitle}}</td>
-                        <td>{{course.Grade|uppercase}}</td>
+                        <td>{{course.Grade}}</td>
+                        <td><button style="font-size:12px" (click)="deleteChange(course.CourseID)">Delete</button></td>
                     </tr>
                 </table>
         </div>
