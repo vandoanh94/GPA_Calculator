@@ -2,7 +2,8 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { Course } from "./Course";
 import { GpaCalculatorService } from "./gpa-calculator.service";
 import jsPDF from 'jspdf';
-declare let jsPDF;
+import { fail } from 'assert';
+declare let jsPDF: any;
 @Component({
     selector: 'gpa-calculator',
     templateUrl: './gpa-calculator.component.html',
@@ -17,6 +18,14 @@ export class GpaCalculatorComponent {
     colorSelected = "Full";
     constructor(private gpaCalculatorService: GpaCalculatorService) {
     }
+
+    ngOnChanges(changes: SimpleChanges) {
+        changes.transcript.currentValue;
+        this.transcript_default = this.deepCopy(this.transcript);
+        this.hopeGPA = null;
+    }
+
+    //dang phat trien, chua co solution
     public download() {
         var doc = new jsPDF();
         doc.text(20, 20, 'Change Courses!!!');
@@ -24,9 +33,15 @@ export class GpaCalculatorComponent {
         //doc.addPage();
         let y = 30;
         this.modifiedCourses(this.transcript).forEach(element => {
-            y=y+10;
-            doc.text(20, y,'*' + element.CourseTitle);
+            y = y + 10;
+            doc.text(20, y, '*' + element.CourseTitle);
         });
+        // var doc = new jsPDF('p', 'pt');
+
+        // var elem = document.getElementById("basic-table");
+        // var res = doc.autoTableHtmlToJson(elem);
+        // doc.autoTable(res.columns, res.data);
+
         doc.save('changecourses.pdf');
     }
 
@@ -39,7 +54,7 @@ export class GpaCalculatorComponent {
             return true;
     }
     setColor(grade): string {
-        if (this.hopeGPA == null)
+        if (this.hopeGPA == null || this.hopeGPA == 0)
             return "white";
         if (grade < this.hopeGPA - 0.7) {
             return "red";
@@ -52,10 +67,6 @@ export class GpaCalculatorComponent {
         }
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        changes.transcript.currentValue;
-        this.transcript_default = this.deepCopy(this.transcript);
-    }
     modifiedCourses(transcript): any {
         let modifiedTranscript: any[] = [];
         for (var i in this.transcript_default) {
@@ -64,6 +75,19 @@ export class GpaCalculatorComponent {
             }
         }
         return modifiedTranscript;
+    }
+    gradeBeforeModified(CourseID): any {
+        let grade = 0;
+        let run=true;
+        this.transcript_default.forEach(element => {
+            if(run){
+                if(element.CourseID==CourseID){
+                    grade=element.Grade;
+                    run = false;
+                }
+            }   
+        });
+        return grade;
     }
     refreshData() {
         this.transcript = this.deepCopy(this.transcript_default);
