@@ -91,6 +91,7 @@ export class GpaCalculatorComponent {
     }
     refreshData() {
         this.transcript = this.deepCopy(this.transcript_default);
+        this.colorSelected = "Full";
     }
     deepCopy(oldObj: any) {
         var newObj = oldObj;
