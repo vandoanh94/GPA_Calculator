@@ -1,5 +1,5 @@
 .table-gpa {
-    width: 300px;
+    width: 100%;
     position: fixed;
 }
 
@@ -7,11 +7,42 @@
     background: rgb(255, 255, 255);
 }
 .td-red{
-    background: red;
+    color: #a94442;
+    background-color: #d9534f!important;
 }
 .td-green{
-    background: rgb(42, 226, 42);
+    color: #3c763d;
+    background-color: #5cb85c!important;
 }
 .td-yellow{
-    background: rgb(243, 247, 16);
+    color: #8a6d3b;
+    background-color: #f0ad4e!important;
+}
+
+.w-day{
+    width: 13%;
+}
+.w-courseId{
+    width: 15%;
+}
+.w-courseTitle{
+    width: 40%;
+}
+.w-grade{
+    width: 17%;
+}
+.w-creditsEarned{
+    width: 15%;
+}
+
+.cal-left{
+    width: 60%;
+}
+
+.cal-right{
+    width: 40%;
+}
+
+.cal-input{
+    width: 100%;
 }
