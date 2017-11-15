@@ -1,7 +1,9 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { Course } from "./Course";
 import { GpaCalculatorService } from "./gpa-calculator.service";
-
+import jsPDF from 'jspdf';
+import { fail } from 'assert';
+declare let jsPDF: any;
 @Component({
     selector: 'gpa-calculator',
     templateUrl: './gpa-calculator.component.html',
@@ -16,16 +18,43 @@ export class GpaCalculatorComponent {
     colorSelected = "Full";
     constructor(private gpaCalculatorService: GpaCalculatorService) {
     }
-    showCheck(color:string):boolean{
-        if(this.hopeGPA == null)
+
+    ngOnChanges(changes: SimpleChanges) {
+        changes.transcript.currentValue;
+        this.transcript_default = this.deepCopy(this.transcript);
+        this.hopeGPA = null;
+    }
+
+    //dang phat trien, chua co solution
+    public download() {
+        var doc = new jsPDF();
+        doc.text(20, 20, 'Change Courses!!!');
+        doc.text(20, 30, '_______________***_______________');
+        //doc.addPage();
+        let y = 30;
+        this.modifiedCourses(this.transcript).forEach(element => {
+            y = y + 10;
+            doc.text(20, y, '*' + element.CourseTitle);
+        });
+        // var doc = new jsPDF('p', 'pt');
+
+        // var elem = document.getElementById("basic-table");
+        // var res = doc.autoTableHtmlToJson(elem);
+        // doc.autoTable(res.columns, res.data);
+
+        doc.save('changecourses.pdf');
+    }
+
+    showCheck(color: string): boolean {
+        if (this.hopeGPA == null)
             return true;
-        if(this.colorSelected == "Full")
-                return true;
-        else if(color == this.colorSelected)
+        if (this.colorSelected == "Full")
+            return true;
+        else if (color == this.colorSelected)
             return true;
     }
     setColor(grade): string {
-        if(this.hopeGPA==null)
+        if (this.hopeGPA == null || this.hopeGPA == 0)
             return "white";
         if (grade < this.hopeGPA - 0.7) {
             return "red";
@@ -37,21 +66,28 @@ export class GpaCalculatorComponent {
             return "green";
         }
     }
-    onSelectGrade(courseGrade){
 
-    }
-    ngOnChanges(changes: SimpleChanges) {
-        changes.transcript.currentValue;
-        this.transcript_default = this.deepCopy(this.transcript);
-    }
     modifiedCourses(transcript): any {
-        let modifiedTranscript : any[] = [];
+        let modifiedTranscript: any[] = [];
         for (var i in this.transcript_default) {
-            if(this.convertGrade(this.transcript_default[i].Grade) != this.convertGrade(transcript[i].Grade)){
-                 modifiedTranscript.push(transcript[i]);
+            if (this.convertGrade(this.transcript_default[i].Grade) != this.convertGrade(transcript[i].Grade)) {
+                modifiedTranscript.push(transcript[i]);
             }
         }
         return modifiedTranscript;
+    }
+    gradeBeforeModified(CourseID): any {
+        let grade = 0;
+        let run=true;
+        this.transcript_default.forEach(element => {
+            if(run){
+                if(element.CourseID==CourseID){
+                    grade=element.Grade;
+                    run = false;
+                }
+            }   
+        });
+        return grade;
     }
     refreshData() {
         this.transcript = this.deepCopy(this.transcript_default);
@@ -78,33 +114,36 @@ export class GpaCalculatorComponent {
             return sumGradePoints / sumCreditEarned;
         }
     }
-    grades = ["A","A-","B+","B","B-","C+","C","C-","D+","D","D-","F"];
-    onSellectGrades(CourseID){
+    grades = ["A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
+    onSellectGrades(CourseID) {
         let grade;
         this.transcript_default.forEach(element => {
-            if(element.CourseID==CourseID){
-                grade=element.Grade;
+            if (element.CourseID == CourseID) {
+                grade = element.Grade;
             }
         });
-        let newGrades=[];
+        let newGrades = [];
         let keepGoing = true;
         this.grades.forEach(element => {
-            if(keepGoing){
+            if (keepGoing) {
                 newGrades.push(element);
-                if(grade == element){
+                if (grade == element) {
                     keepGoing = false;
                 }
-            }  
+            }
         });
         return newGrades;
     }
-
-    deleteChange(CourseID){
+    text = "";
+    openExport() {
+        this.text = "text done!";
+    }
+    deleteChange(CourseID) {
         this.transcript_default.forEach(element => {
-            if(element.CourseID==CourseID){
+            if (element.CourseID == CourseID) {
                 let Course = element;
                 this.transcript.forEach(element => {
-                    if(element.CourseID==CourseID){
+                    if (element.CourseID == CourseID) {
                         element.Grade = Course.Grade;
                     }
                 });
