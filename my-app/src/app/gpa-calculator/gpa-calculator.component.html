@@ -1,6 +1,9 @@
 <div class="jumbotron">
     <h1>GPA CALCULATOR</h1>
-    <p class="text-muted">Wellcome to EIU first GPA estimation system</p> 
+    <p class="text-muted">Wellcome to EIU first GPA estimation system</p>
+    <xml-convert (transcript) = "updateTranscript($event)"></xml-convert>
+    <button type="button" class="btn btn-sm pull-right" data-toggle="modal" data-target="#myModal" (click)="openExport()">Export</button>
+    <button type="button" class="btn" (click)="refreshData()">Refresh Data</button>
 </div>
 <div>
     <div class="row">
@@ -82,11 +85,6 @@
                     <h3 class="panel-title">Modified Courses</h3>
                 </div>
                 <table class="table table-bordered">
-                    <tr>
-                        <th colspan="3">
-                            <button type="button" class="btn btn-sm pull-right" data-toggle="modal" data-target="#myModal" (click)="openExport()">Export</button>
-                        </th>
-                    </tr>
                     <tr *ngFor="let course of modifiedCourses(transcript)">
                         <td>{{course.CourseTitle}}</td>
                         <td>{{course.Grade}}</td>
@@ -107,7 +105,6 @@
                 <div class="modal-header">
                     <h4 class="modal-title text-center">REPORT</h4>
                 </div>
-
                 <table class="table table-bordered">
                     <thead>
                         <tr>
