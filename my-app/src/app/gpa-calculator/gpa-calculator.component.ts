@@ -27,7 +27,7 @@ export class GpaCalculatorComponent {
     }
 
     public download() {
-        let pdf = new jsPDF('l', 'pt', 'a5');
+        let pdf = new jsPDF('l', 'pt', 'letter');
         let options = {
           pagesplit: true
         };
@@ -83,6 +83,7 @@ export class GpaCalculatorComponent {
     refreshData() {
         this.transcript = this.deepCopy(this.transcript_default);
         this.colorSelected = "Full";
+        this.hopeGPA=null;
     }
     deepCopy(oldObj: any) {
         var newObj = oldObj;
