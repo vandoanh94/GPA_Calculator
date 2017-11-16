@@ -48,13 +48,13 @@ export class GpaCalculatorComponent {
         if (this.hopeGPA == null || this.hopeGPA == 0)
             return "white";
         if (grade < this.hopeGPA - 0.7) {
-            return "red";
+            return "alert alert-danger";
         }
         if (grade < this.hopeGPA) {
-            return "yellow";
+            return "alert alert-warning";
         }
         if (grade >= this.hopeGPA) {
-            return "green";
+            return "alert alert-success";
         }
     }
 
