@@ -1,85 +1,104 @@
-<div class="row">
-    <div class="col-sm-9">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th class="w-day">Day</th>
-                    <th class="w-courseId">Course ID</th>
-                    <th class="w-courseTitle">Course Title</th>
-                    <th class="w-grade">Grade
-                        <select *ngIf="hopeGPA>0" [(ngModel)]="colorSelected">
-                            <option value="Full">Full</option>
-                            <option class="td-green" value="green">Green</option>
-                            <option class="td-yellow" value="yellow">Yellow</option>
-                            <option class="td-red" value="red">Red</option>
-                        </select>
-                    </th>
-                    <th class="w-creditsEarned">Credits Earned</th>
-                </tr>
-            </thead>
-            <tbody *ngFor="let course of transcript">
-                <tr *ngIf="course.CreditEarned>0 && showCheck(setColor(convertGrade(course.Grade)))">
-                    <td>{{course.Day}}</td>
-                    <td>{{course.CourseID}}</td>
-                    <td>{{course.CourseTitle}}</td>
-                    <td class="td-{{setColor(convertGrade(course.Grade))}}" *ngIf="onSellectGrades(course.CourseID).length>1">
-                        <select [(ngModel)]="course.Grade">
-                            <option *ngFor="let grade of onSellectGrades(course.CourseID)" [value]="grade">{{grade}}</option>
-                        </select>
-                    </td>
-                    <td class="td-{{setColor(convertGrade(course.Grade))}}" *ngIf="onSellectGrades(course.CourseID).length==1">
-                        {{course.Grade}}
-                    </td>
-                    <td>{{course.CreditEarned}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="col-sm-3">
-            <table class="table table-bordered">
-                <thead>
+<div class="jumbotron">
+    <h1>GPA CALCULATOR</h1>
+    <p class="text-muted">Wellcome to EIU first GPA estimation system</p> 
+</div>
+<div>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Transcript</h3>
+                </div>
+                <table class="table table-hover" id="dev-table">
+                    <thead>
+                        <tr>
+                            <th class="w-day">Day</th>
+                            <th class="w-courseId">Course ID</th>
+                            <th class="w-courseTitle">Course Title</th>
+                            <th class="w-grade">Grade
+                                <select *ngIf="hopeGPA>0" [(ngModel)]="colorSelected">
+                                    <option value="Full">Full</option>
+                                    <option class="alert alert-success" value="alert alert-success">Green</option>
+                                    <option class="alert alert-warning" value="alert alert-warning">Yellow</option>
+                                    <option class="alert alert-danger" value="alert alert-danger">Red</option>
+                                </select>
+                            </th>
+                            <th class="w-creditsEarned">Credits Earned</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let course of transcript">
+                        <tr *ngIf="course.CreditEarned>0 && showCheck(setColor(convertGrade(course.Grade)))"  class="{{setColor(convertGrade(course.Grade))}}" >
+                            <td>{{course.Day}}</td>
+                            <td>{{course.CourseID}}</td>
+                            <td>{{course.CourseTitle}}</td>
+                            <td *ngIf="onSellectGrades(course.CourseID).length>1">
+                                <select [(ngModel)]="course.Grade">
+                                    <option *ngFor="let grade of onSellectGrades(course.CourseID)" [value]="grade">{{grade}}</option>
+                                </select>
+                            </td>
+                            <td *ngIf="onSellectGrades(course.CourseID).length==1">
+                                {{course.Grade}}
+                            </td>
+                            <td>{{course.CreditEarned}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Action</h3>
+                </div>
+                <table class="table table-hover" id="task-table">
+                    <thead>
+                        <tr>
+                            <th class="cal-left">Calculator</th>
+                            <th class="cal-right">
+                                <button type="button" class="btn" (click)="refreshData()">Refresh Data</button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cal-left">Current GPA </td>
+                            <td class="cal-right">{{gpaCalculator(transcript_default) | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td class="cal-left">Modified GPA </td>
+                            <td class="cal-right">{{gpaCalculator(transcript) | number:'1.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td class="cal-left">Hope GPA </td>
+                            <td class="cal-right">
+                                <input class="cal-input" [(ngModel)]="hopeGPA">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel panel-success"  *ngIf="modifiedCourses(transcript).length>0" >
+                <div class="panel-heading">
+                    <h3 class="panel-title">Modified Courses</h3>
+                </div>
+                <table class="table table-bordered">
                     <tr>
-                        <th class="cal-left">Calculator</th>
-                        <th class="cal-right">
-                            <button type="button" class="btn" (click)="refreshData()">Refresh Data</button>
+                        <th colspan="3">
+                            <button type="button" class="btn btn-sm pull-right" data-toggle="modal" data-target="#myModal" (click)="openExport()">Export</button>
                         </th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="cal-left">Current GPA </td>
-                        <td class="cal-right">{{gpaCalculator(transcript_default) | number:'1.2-2'}}</td>
-                    </tr>
-                    <tr>
-                        <td class="cal-left">Modified GPA </td>
-                        <td class="cal-right">{{gpaCalculator(transcript) | number:'1.2-2'}}</td>
-                    </tr>
-                    <tr>
-                        <td class="cal-left">Hope GPA </td>
-                        <td class="cal-right">
-                            <input class="cal-input" [(ngModel)]="hopeGPA">
+                    <tr *ngFor="let course of modifiedCourses(transcript)">
+                        <td>{{course.CourseTitle}}</td>
+                        <td>{{course.Grade}}</td>
+                        <td>
+                            <button type="button" class="btn btn-xs btn-danger" (click)="deleteChange(course.CourseID)">Delete</button>
                         </td>
                     </tr>
-                </tbody>
-            </table>
-            <table *ngIf="modifiedCourses(transcript).length>0" class="table table-bordered">
-                <tr>
-                    <th colspan="3">
-                        Modified Courses
-                        <button type="button" class="btn btn-sm pull-right" data-toggle="modal" data-target="#myModal" (click)="openExport()">Export</button>
-                    </th>
-                </tr>
-                <tr *ngFor="let course of modifiedCourses(transcript)">
-                    <td>{{course.CourseTitle}}</td>
-                    <td>{{course.Grade}}</td>
-                    <td>
-                        <button type="button" class="btn btn-xs btn-danger" (click)="deleteChange(course.CourseID)">Delete</button>
-                    </td>
-                </tr>
-            </table>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
