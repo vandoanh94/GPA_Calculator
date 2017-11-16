@@ -36,7 +36,6 @@
         </table>
     </div>
     <div class="col-sm-3">
-        <div clas="table-gpa">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -58,7 +57,7 @@
                     <tr>
                         <td class="cal-left">Hope GPA </td>
                         <td class="cal-right">
-                            <input class="cal-input"[(ngModel)]="hopeGPA">
+                            <input class="cal-input" [(ngModel)]="hopeGPA">
                         </td>
                     </tr>
                 </tbody>
@@ -78,7 +77,6 @@
                     </td>
                 </tr>
             </table>
-        </div>
     </div>
 </div>
 
@@ -86,10 +84,11 @@
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title text-center">REPORT</h4>
-            </div>
-            <div id ="report" class="modal-body">
+            <div #report class="modal-body report">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center">REPORT</h4>
+                </div>
+
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -122,6 +121,5 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-
     </div>
 </div>

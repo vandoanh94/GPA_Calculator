@@ -1,6 +1,6 @@
 .table-gpa {
-    width: 100%;
     position: fixed;
+    width: 295px;
 }
 
 .td-{
@@ -45,4 +45,8 @@
 
 .cal-input{
     width: 100%;
+}
+
+.report{
+    background: white;
 }

@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges,ElementRef, ViewChild } from '@angular/core';
 import { Course } from "./Course";
 import { GpaCalculatorService } from "./gpa-calculator.service";
 import jsPDF from 'jspdf';
@@ -11,6 +11,7 @@ declare let jsPDF: any;
 })
 
 export class GpaCalculatorComponent {
+    @ViewChild('report') el: ElementRef;
     title = 'Gpa Calculator';
     @Input() transcript: any;
     transcript_default: any;
@@ -25,24 +26,14 @@ export class GpaCalculatorComponent {
         this.hopeGPA = null;
     }
 
-    //dang phat trien, chua co solution
     public download() {
-        var doc = new jsPDF();
-        doc.text(20, 20, 'Change Courses!!!');
-        doc.text(20, 30, '_______________***_______________');
-        //doc.addPage();
-        let y = 30;
-        this.modifiedCourses(this.transcript).forEach(element => {
-            y = y + 10;
-            doc.text(20, y, '*' + element.CourseTitle);
+        let pdf = new jsPDF('l', 'pt', 'a5');
+        let options = {
+          pagesplit: true
+        };
+        pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
+          pdf.save("report.pdf");
         });
-        // var doc = new jsPDF('p', 'pt');
-
-        // var elem = document.getElementById("basic-table");
-        // var res = doc.autoTableHtmlToJson(elem);
-        // doc.autoTable(res.columns, res.data);
-
-        doc.save('changecourses.pdf');
     }
 
     showCheck(color: string): boolean {
