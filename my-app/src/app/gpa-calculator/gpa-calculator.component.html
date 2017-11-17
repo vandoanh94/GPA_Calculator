@@ -3,7 +3,6 @@
     <p class="text-muted">Wellcome to EIU first GPA estimation system</p>
     <xml-convert (transcript) = "updateTranscript($event)"></xml-convert>
     <button type="button" class="btn btn-sm pull-right" data-toggle="modal" data-target="#myModal" (click)="openExport()">Export</button>
-    <button type="button" class="btn" (click)="refreshData()">Refresh Data</button>
 </div>
 <div>
     <div class="row">
@@ -35,14 +34,14 @@
                             <td>{{course.CourseID}}</td>
                             <td>{{course.CourseTitle}}</td>
                             <td *ngIf="onSellectGrades(course.CourseID).length>1">
-                                <select [(ngModel)]="course.Grade">
+                                <select [(ngModel)]="course.Grade" class="form-control">
                                     <option *ngFor="let grade of onSellectGrades(course.CourseID)" [value]="grade">{{grade}}</option>
                                 </select>
                             </td>
-                            <td *ngIf="onSellectGrades(course.CourseID).length==1">
+                            <td *ngIf="onSellectGrades(course.CourseID).length==1" style="text-align: center">
                                 {{course.Grade}}
                             </td>
-                            <td>{{course.CreditEarned}}</td>
+                            <td style="text-align: center">{{course.CreditEarned}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -51,30 +50,22 @@
         <div class="col-md-3">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Action</h3>
+                    <h3 class="panel-title">GPA Summary</h3>
                 </div>
                 <table class="table table-hover" id="task-table">
-                    <thead>
-                        <tr>
-                            <th class="cal-left">Calculator</th>
-                            <th class="cal-right">
-                                <button type="button" class="btn" (click)="refreshData()">Refresh Data</button>
-                            </th>
-                        </tr>
-                    </thead>
                     <tbody>
                         <tr>
-                            <td class="cal-left">Current GPA </td>
+                            <td class="cal-left" ><b>Original:</b></td>
                             <td class="cal-right">{{gpaCalculator(transcript_default) | number:'1.2-2'}}</td>
                         </tr>
                         <tr>
-                            <td class="cal-left">Modified GPA </td>
+                            <td class="cal-left"><b>Modified::</b></td>
                             <td class="cal-right">{{gpaCalculator(transcript) | number:'1.2-2'}}</td>
                         </tr>
                         <tr>
-                            <td class="cal-left">Hope GPA </td>
+                            <td class="cal-left"><b>Target:</b></td>
                             <td class="cal-right">
-                                <input class="cal-input" [(ngModel)]="hopeGPA">
+                                <input class="form-control" type="number" [(ngModel)]="hopeGPA" placeholder="0">
                             </td>
                         </tr>
                     </tbody>
@@ -83,6 +74,7 @@
             <div class="panel panel-success"  *ngIf="modifiedCourses(transcript).length>0" >
                 <div class="panel-heading">
                     <h3 class="panel-title">Modified Courses</h3>
+                    <button type="button" class="btn" (click)="refreshData()">Refresh Data</button>
                 </div>
                 <table class="table table-bordered">
                     <tr *ngFor="let course of modifiedCourses(transcript)">
