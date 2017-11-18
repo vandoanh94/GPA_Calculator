@@ -2,7 +2,8 @@
     <h1>GPA CALCULATOR</h1>
     <p class="text-muted">Wellcome to EIU first GPA estimation system</p>
     <xml-convert (transcript) = "updateTranscript($event)"></xml-convert>
-    <button type="button" class="btn btn-sm pull-right" data-toggle="modal" data-target="#myModal" (click)="openExport()">Export</button>
+    <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#myModal" (click)="openExport()">Export</button>
+    <button type="button" class="btn" (click)="refreshData()">Refresh Data</button>
 </div>
 <div>
     <div class="row">
@@ -74,7 +75,6 @@
             <div class="panel panel-success"  *ngIf="modifiedCourses(transcript).length>0" >
                 <div class="panel-heading">
                     <h3 class="panel-title">Modified Courses</h3>
-                    <button type="button" class="btn" (click)="refreshData()">Refresh Data</button>
                 </div>
                 <table class="table table-bordered">
                     <tr *ngFor="let course of modifiedCourses(transcript)">
