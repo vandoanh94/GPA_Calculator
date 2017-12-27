@@ -22,8 +22,12 @@ export class xmlConvertComponent {
         xml2js.parseString(any, function (err, result) {
             let table = result.Report.Table1;
             table.forEach(element => {
+                // old version
+                // obj4 += element.TXTTENMON[0];
+                // data.push({Day: element.TEXT33[0],CourseID: element.TEXT34[0],CourseTitle: element.TXTTENMON[0],Grade: element.TEXT36[0],CreditEarned: element.TEXT4[0]});
+
                 obj4 += element.TXTTENMON[0];
-                data.push({Day: element.TEXT33[0],CourseID: element.TEXT34[0],CourseTitle: element.TXTTENMON[0],Grade: element.TEXT36[0],CreditEarned: element.TEXT4[0]});
+                data.push({Day: element.TEXT2[0],CourseID: element.TEXT34[0],CourseTitle: element.TXTTENMON[0],Grade: element.TEXT36[0],CreditEarned: element.TEXT4[0]});
             });
             
         });

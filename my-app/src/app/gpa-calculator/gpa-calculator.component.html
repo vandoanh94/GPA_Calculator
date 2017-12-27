@@ -21,7 +21,7 @@
                 <table class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
-                            <th class="w-day">Day</th>
+                            <!-- <th class="w-day">Day</th> -->
                             <th class="w-courseId">Course ID</th>
                             <th class="w-courseTitle">Course Title</th>
                             <th class="w-grade">Grade
@@ -37,7 +37,7 @@
                     </thead>
                     <tbody *ngFor="let course of transcript">
                         <tr *ngIf="course.CreditEarned>0 && showCheck(setColor(convertGrade(course.Grade)))"  class="{{setColor(convertGrade(course.Grade))}}" >
-                            <td>{{course.Day}}</td>
+                            <!-- <td>{{course.Day}}</td> -->
                             <td>{{course.CourseID}}</td>
                             <td>{{course.CourseTitle}}</td>
                             <td *ngIf="onSellectGrades(course.CourseID).length>1">
@@ -107,7 +107,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Day</th>
+                            <!-- <th>Day</th> -->
                             <th>Course ID</th>
                             <th>Course Title</th>
                             <th>Current Grade </th>
@@ -117,7 +117,7 @@
                     </thead>
                     <tbody *ngFor="let course of modifiedCourses(transcript)">
                         <tr>
-                            <td>{{course.Day}}</td>
+                            <!-- <td>{{course.Day}}</td> -->
                             <td>{{course.CourseID}}</td>
                             <td>{{course.CourseTitle}}</td>
                             <td class="list-group-item-danger">{{gradeBeforeModified(course.CourseID)}}</td>
